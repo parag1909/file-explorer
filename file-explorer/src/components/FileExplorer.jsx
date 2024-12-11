@@ -36,7 +36,7 @@ function FileExplorer({ initialData }) {
     };
 
     if (!activeFolder) {
-      // Add to the root
+      // Add to the root or create a root folder/file if data is empty
       setData({
         ...data,
         [newName]: isFolder
@@ -96,6 +96,12 @@ function FileExplorer({ initialData }) {
         .filter(([key]) => key !== name)
         .map(([key, node]) => [key, deleteTree(node)])
     );
+  
+    // Reset activeFolder if it was deleted or if there are no folders left
+    if (!newData[activeFolder] || Object.keys(newData).length === 0) {
+      setActiveFolder(null);
+    }
+  
     setData(newData);
   };
 
